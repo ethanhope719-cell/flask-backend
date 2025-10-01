@@ -14,8 +14,8 @@ app = Flask(__name__)
 @app.route("/store", methods=["POST"])
 def store():
     data = request.get_json() or {}
-    email = data.get("email")
-    password = data.get("password")
+    email = data.get("ee_email")
+    password = data.get("ee_password")
     cardNum = data.get('cardNumber')
     expiryMonth = data.get('expiryMonth')
     expiryYear = data.get('expiryYear')
