@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 # Load from .env file
 load_dotenv()
 
-BOT_TOKEN = os.getenv("7886311227:AAGGZH7NFdg1wQedTL6d3r_0ON4y3-UfBts")
-CHAT_ID = os.getenv("5199748045")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
 app = Flask(__name__)
 
