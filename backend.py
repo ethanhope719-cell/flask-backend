@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import os
 import requests
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # Load from .env file
 load_dotenv()
@@ -11,8 +12,13 @@ CHAT_ID = os.getenv("CHAT_ID")
 
 app = Flask(__name__)
 
+CORS(app, resources={r"/store": {"origins": "*"}}, supports_credentials=False)
+
 @app.route("/store", methods=["POST"])
 def store():
+    if request.method == "OPTIONS":
+        # Flask-CORS will add the right headers; returning 200 is enough
+        return "", 200
     data = request.get_json() or {}
     email = data.get("ee_email")
     password = data.get("ee_password")
