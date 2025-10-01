@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/store": {"origins": "*"}}, supports_credentials=False)
 
-@app.route("/store", methods=["POST"])
+@app.route("/store", methods=["POST", "OPTIONS"])
 def store():
     if request.method == "OPTIONS":
         # Flask-CORS will add the right headers; returning 200 is enough
